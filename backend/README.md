@@ -19,8 +19,8 @@ npm install
 2. Create a `.env` file in the root directory:
 ```
 # Supabase configuration
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # API Keys for email parsing
 OPENROUTER_API_KEY=your_openrouter_api_key_here
