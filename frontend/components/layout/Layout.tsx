@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import { theme } from '../../utils/theme';
@@ -7,6 +8,9 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const location = useLocation();
+  const isAuthPage = location.pathname === '/auth';
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -16,10 +20,10 @@ const Layout = ({ children }: LayoutProps) => {
       overflow: 'hidden',
       backgroundColor: theme.colors.neutral[50]
     }}>
-      <Header />
+      {!isAuthPage && <Header />}
       <main style={{
         flex: '1',
-        padding: '16px',
+        padding: '32px',
         maxWidth: '100%',
         overflowX: 'hidden'
       }}>

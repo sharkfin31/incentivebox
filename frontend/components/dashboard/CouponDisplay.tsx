@@ -294,11 +294,11 @@ const CouponDisplay = ({
               <div
                 key={coupon.id}
                 style={{
-                  border: `1px solid ${theme.colors.neutral[200]}`,
+                  border: `1px solid ${isExpired ? theme.colors.error.light : theme.colors.neutral[200]}`,
                   borderRadius: theme.borderRadius.xl,
                   overflow: "hidden",
                   transition: "all 0.2s ease",
-                  backgroundColor: "white",
+                  backgroundColor: isExpired ? theme.colors.error.light + "15" : "white",
                   position: "relative",
                 }}
                 onMouseEnter={(e) => {
@@ -327,24 +327,6 @@ const CouponDisplay = ({
                   </div>
                 )}
 
-                {isExpired && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: "10px",
-                      right: "10px",
-                      background: theme.colors.error.main,
-                      color: "white",
-                      padding: "2px 8px",
-                      borderRadius: theme.borderRadius.md,
-                      fontSize: "11px",
-                      fontWeight: "bold",
-                      zIndex: 2,
-                    }}
-                  >
-                    EXPIRED
-                  </div>
-                )}
                 <Link
                   to={`/coupon/${coupon.id}`}
                   style={{
@@ -356,11 +338,11 @@ const CouponDisplay = ({
                   <div
                     style={{
                       padding: "12px",
-                      borderBottom: `1px solid ${theme.colors.neutral[200]}`,
+                      borderBottom: `1px solid ${isExpired ? theme.colors.error.light : theme.colors.neutral[200]}`,
                       display: "flex",
                       alignItems: "center",
                       gap: "12px",
-                      background: theme.colors.neutral[50],
+                      background: isExpired ? theme.colors.error.light + "10" : theme.colors.neutral[50],
                     }}
                   >
                     <img
@@ -386,7 +368,7 @@ const CouponDisplay = ({
                       <p
                         style={{
                           fontSize: "12px",
-                          color: theme.colors.neutral[500],
+                          color: isExpired ? theme.colors.error.main : theme.colors.neutral[500],
                           display: "flex",
                           alignItems: "center",
                           gap: "4px",
@@ -453,14 +435,14 @@ const CouponDisplay = ({
               <div
                 key={coupon.id}
                 style={{
-                  border: `1px solid ${theme.colors.neutral[200]}`,
+                  border: `1px solid ${isExpired ? theme.colors.error.light : theme.colors.neutral[200]}`,
                   borderRadius: theme.borderRadius.xl,
                   padding: "16px",
                   display: "flex",
                   alignItems: "center",
                   gap: "16px",
                   transition: "all 0.2s ease",
-                  backgroundColor: "white",
+                  backgroundColor: isExpired ? theme.colors.error.light + "15" : "white",
                   position: "relative",
                 }}
                 onMouseEnter={(e) => {
@@ -484,25 +466,6 @@ const CouponDisplay = ({
                       coupon={coupon}
                       size="sm"
                     />
-                  </div>
-                )}
-
-                {isExpired && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: "10px",
-                      right: "10px",
-                      background: theme.colors.error.main,
-                      color: "white",
-                      padding: "2px 8px",
-                      borderRadius: theme.borderRadius.md,
-                      fontSize: "11px",
-                      fontWeight: "bold",
-                      zIndex: 2,
-                    }}
-                  >
-                    EXPIRED
                   </div>
                 )}
 
@@ -573,7 +536,7 @@ const CouponDisplay = ({
                       <div
                         style={{
                           fontSize: "12px",
-                          color: theme.colors.neutral[500],
+                          color: isExpired ? theme.colors.error.main : theme.colors.neutral[500],
                           display: "flex",
                           alignItems: "center",
                           gap: "4px",

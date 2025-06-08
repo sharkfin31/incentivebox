@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import CategoryFilter from './CategoryFilter';
 import BrandFilter from './BrandFilter';
 import FilterToggle from './FilterToggle';
@@ -7,6 +8,7 @@ import SavedCoupons from './SavedCoupons';
 import { useCoupons } from '../../hooks/useCoupons';
 import { useBrands } from '../../hooks/useBrands';
 import { useAuth } from '../../context/AuthContext';
+import { theme } from '../../utils/theme';
 
 // Define Category type directly in this file
 type Category = 
@@ -24,7 +26,7 @@ const Dashboard = () => {
   const [activeFilter, setActiveFilter] = useState<FilterType>('categories');
   const [selectedCategory, setSelectedCategory] = useState<Category>('All');
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   
   const { coupons, loading: couponsLoading, error: couponsError, refreshCoupons } = useCoupons(
     activeFilter === 'categories' ? selectedCategory : undefined,
@@ -41,6 +43,24 @@ const Dashboard = () => {
       setSelectedCategory('All');
     }
   };
+
+  // Redirect unauthenticated users to login
+  if (!loading && !user) {
+    return <Navigate to="/auth" replace />;
+  }
+  
+  // Show loading state while checking authentication
+  if (loading) {
+    return (
+      <div style={{ 
+        padding: '40px 20px',
+        textAlign: 'center',
+        color: theme.colors.neutral[600]
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div style={{ 
@@ -73,13 +93,11 @@ const Dashboard = () => {
         refreshCoupons={refreshCoupons}
       />
       
-      {user && (
-        <div style={{
-          marginTop: '32px'
-        }}>
-          <SavedCoupons userId={user.id} />
-        </div>
-      )}
+      <div style={{
+        marginTop: '32px'
+      }}>
+        <SavedCoupons userId={user.id} />
+      </div>
     </div>
   );
 };
