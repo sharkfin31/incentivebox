@@ -335,7 +335,7 @@ const ProfilePage = () => {
                       position: 'relative'
                     }}>
                       <img
-                        src={coupon.brand_logo || `https://via.placeholder.com/40?text=${coupon.brand}`}
+                        src={coupon.brand_logo || "/favicon.svg"}
                         alt={`${coupon.brand} logo`}
                         style={{
                           width: '40px',
@@ -350,6 +350,8 @@ const ProfilePage = () => {
                           {new Date() > new Date(coupon.expiration_date) && (
                             <div style={{
                               background: theme.colors.error.main,
+                              right: '12px',
+                              position: 'absolute',
                               color: 'white',
                               padding: '2px 6px',
                               borderRadius: theme.borderRadius.sm,
@@ -374,14 +376,25 @@ const ProfilePage = () => {
                         fontWeight: 'bold', 
                         color: theme.colors.accent.main,
                         fontSize: '18px',
-                        marginBottom: '8px'
-                      }}>
+                        marginBottom: '8px',
+                        maxWidth: '100%',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        height: '27px'
+                      }}
+                      title={coupon.savings}>
                         {coupon.savings}
                       </p>
                       <p style={{ 
                         marginBottom: '12px',
-                        color: theme.colors.neutral[700]
-                      }}>
+                        color: theme.colors.neutral[700],
+                        height: '20px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}
+                      title={coupon.description}>
                         {coupon.description}
                       </p>
                     </div>

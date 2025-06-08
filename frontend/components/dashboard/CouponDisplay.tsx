@@ -1,6 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { FiGrid, FiList, FiSearch, FiTag, FiCalendar, FiTrash2 } from "react-icons/fi";
+import {
+  FiGrid,
+  FiList,
+  FiSearch,
+  FiTag,
+  FiCalendar,
+  FiTrash2,
+} from "react-icons/fi";
 import { format } from "date-fns";
 import { theme } from "../../utils/theme";
 import { useAuth } from "../../context/AuthContext";
@@ -58,14 +65,14 @@ const CouponDisplay = ({
     const handleResize = () => {
       const width = window.innerWidth;
       setIsMobile(width < 768);
-      
+
       // Adjust display limit based on screen size
       if (width < 600) {
         setDisplayLimit(2);
       } else if (width < 900) {
-        setDisplayLimit(4);
+        setDisplayLimit(3);
       } else {
-        setDisplayLimit(6);
+        setDisplayLimit(4);
       }
     };
 
@@ -77,24 +84,31 @@ const CouponDisplay = ({
   // Handle deleting expired coupons
   const handleDeleteExpiredCoupons = async () => {
     setIsDeletingExpired(true);
-    
+
     try {
       const { success, count, error } = await deleteExpiredCoupons();
-      
+
       if (success) {
-        addNotification('success', `Successfully deleted ${count} expired coupon${count !== 1 ? 's' : ''}`);
+        addNotification(
+          "success",
+          `Successfully deleted ${count} expired coupon${
+            count !== 1 ? "s" : ""
+          }`
+        );
         // Use the refreshCoupons function instead of reloading the page
         if (refreshCoupons) {
           refreshCoupons();
         }
       } else {
         addNotification(
-          'error',
-          error?.message || 'Failed to delete expired coupons'
+          "error",
+          error && typeof error === "object" && "message" in error
+            ? (error as { message: string }).message
+            : "Failed to delete expired coupons"
         );
       }
     } catch (err) {
-      addNotification('error', 'An unexpected error occurred');
+      addNotification("error", "An unexpected error occurred");
     } finally {
       setIsDeletingExpired(false);
     }
@@ -204,10 +218,11 @@ const CouponDisplay = ({
                 cursor: isDeletingExpired ? "not-allowed" : "pointer",
                 opacity: isDeletingExpired ? 0.7 : 1,
                 fontWeight: "500",
-                fontSize: "13px"
+                fontSize: "13px",
               }}
             >
-              <FiTrash2 size={14} /> {isDeletingExpired ? "Deleting..." : "Delete Expired"}
+              <FiTrash2 size={14} />{" "}
+              {isDeletingExpired ? "Deleting..." : "Delete Expired"}
             </button>
           )}
           <div
@@ -253,8 +268,14 @@ const CouponDisplay = ({
               onClick={() => setViewMode("card")}
               style={{
                 padding: "6px 10px",
-                background: viewMode === "card" ? theme.colors.primary.light + "20" : "white",
-                color: viewMode === "card" ? theme.colors.primary.main : theme.colors.neutral[600],
+                background:
+                  viewMode === "card"
+                    ? theme.colors.primary.light + "20"
+                    : "white",
+                color:
+                  viewMode === "card"
+                    ? theme.colors.primary.main
+                    : theme.colors.neutral[600],
                 border: "none",
                 borderRight: `1px solid ${theme.colors.neutral[300]}`,
                 cursor: "pointer",
@@ -266,8 +287,14 @@ const CouponDisplay = ({
               onClick={() => setViewMode("list")}
               style={{
                 padding: "6px 10px",
-                background: viewMode === "list" ? theme.colors.primary.light + "20" : "white",
-                color: viewMode === "list" ? theme.colors.primary.main : theme.colors.neutral[600],
+                background:
+                  viewMode === "list"
+                    ? theme.colors.primary.light + "20"
+                    : "white",
+                color:
+                  viewMode === "list"
+                    ? theme.colors.primary.main
+                    : theme.colors.neutral[600],
                 border: "none",
                 cursor: "pointer",
               }}
@@ -282,7 +309,9 @@ const CouponDisplay = ({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: `repeat(auto-fill, minmax(${isMobile ? "100%" : "280px"}, 1fr))`,
+            gridTemplateColumns: `repeat(auto-fill, minmax(${
+              isMobile ? "100%" : "280px"
+            }, 1fr))`,
             gap: "16px",
             marginBottom: "24px",
           }}
@@ -294,11 +323,11 @@ const CouponDisplay = ({
               <div
                 key={coupon.id}
                 style={{
-                  border: `1px solid ${isExpired ? theme.colors.error.light : theme.colors.neutral[200]}`,
+                  border: `1px solid ${theme.colors.neutral[200]}`,
                   borderRadius: theme.borderRadius.xl,
                   overflow: "hidden",
                   transition: "all 0.2s ease",
-                  backgroundColor: isExpired ? theme.colors.error.light + "15" : "white",
+                  backgroundColor: "white",
                   position: "relative",
                 }}
                 onMouseEnter={(e) => {
@@ -310,19 +339,38 @@ const CouponDisplay = ({
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
+                {isExpired && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "10px",
+                      right: "10px",
+                      backgroundColor: theme.colors.error.main,
+                      color: "white",
+                      padding: "4px 8px",
+                      borderRadius: theme.borderRadius.sm,
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                      zIndex: 3,
+                    }}
+                  >
+                    EXPIRED
+                  </div>
+                )}
+
                 {user && (
                   <div
                     style={{
                       position: "absolute",
-                      top: "10px",
-                      right: "10px",
+                      top: "15px",
+                      right: "15px",
                       zIndex: 2,
                     }}
                   >
                     <FavoriteButton
                       couponId={coupon.id}
                       coupon={coupon}
-                      size="sm"
+                      size="md"
                     />
                   </div>
                 )}
@@ -338,15 +386,15 @@ const CouponDisplay = ({
                   <div
                     style={{
                       padding: "12px",
-                      borderBottom: `1px solid ${isExpired ? theme.colors.error.light : theme.colors.neutral[200]}`,
+                      borderBottom: `1px solid ${theme.colors.neutral[200]}`,
                       display: "flex",
                       alignItems: "center",
                       gap: "12px",
-                      background: isExpired ? theme.colors.error.light + "10" : theme.colors.neutral[50],
+                      background: theme.colors.neutral[50],
                     }}
                   >
                     <img
-                      src={coupon.brand_logo || `https://via.placeholder.com/40?text=${coupon.brand}`}
+                      src={coupon.brand_logo || "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/money%20bag/3D/money_bag_3d.png"}
                       alt={`${coupon.brand} logo`}
                       style={{
                         width: "40px",
@@ -368,7 +416,9 @@ const CouponDisplay = ({
                       <p
                         style={{
                           fontSize: "12px",
-                          color: isExpired ? theme.colors.error.main : theme.colors.neutral[500],
+                          color: isExpired
+                            ? theme.colors.error.main
+                            : theme.colors.neutral[500],
                           display: "flex",
                           alignItems: "center",
                           gap: "4px",
@@ -376,7 +426,11 @@ const CouponDisplay = ({
                         }}
                       >
                         <FiCalendar size={12} />
-                        Expires: {format(new Date(coupon.expiration_date), "MMM d, yyyy")}
+                        Expires:{" "}
+                        {format(
+                          new Date(coupon.expiration_date),
+                          "MMM d, yyyy"
+                        )}
                       </p>
                     </div>
                   </div>
@@ -388,7 +442,12 @@ const CouponDisplay = ({
                         color: theme.colors.accent.main,
                         fontSize: "18px",
                         marginBottom: "8px",
+                        maxWidth: "100%",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
                       }}
+                      title={coupon.savings}
                     >
                       {coupon.savings}
                     </p>
@@ -397,7 +456,14 @@ const CouponDisplay = ({
                         fontSize: "14px",
                         marginBottom: "12px",
                         color: theme.colors.neutral[700],
+                        height: "20px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
                       }}
+                      title={coupon.description}
                     >
                       {coupon.description}
                     </p>
@@ -407,8 +473,15 @@ const CouponDisplay = ({
                           fontSize: "11px",
                           color: theme.colors.neutral[400],
                           marginBottom: "16px",
-                          fontStyle: "italic"
+                          fontStyle: "italic",
+                          height: "20px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: "vertical",
                         }}
+                        title={coupon.criteria}
                       >
                         {coupon.criteria}
                       </p>
@@ -435,14 +508,14 @@ const CouponDisplay = ({
               <div
                 key={coupon.id}
                 style={{
-                  border: `1px solid ${isExpired ? theme.colors.error.light : theme.colors.neutral[200]}`,
+                  border: `1px solid ${theme.colors.neutral[200]}`,
                   borderRadius: theme.borderRadius.xl,
                   padding: "16px",
                   display: "flex",
                   alignItems: "center",
                   gap: "16px",
                   transition: "all 0.2s ease",
-                  backgroundColor: isExpired ? theme.colors.error.light + "15" : "white",
+                  backgroundColor: "white",
                   position: "relative",
                 }}
                 onMouseEnter={(e) => {
@@ -452,11 +525,30 @@ const CouponDisplay = ({
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
+                {isExpired && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "10px",
+                      right: "10px",
+                      backgroundColor: theme.colors.error.main,
+                      color: "white",
+                      padding: "4px 8px",
+                      borderRadius: theme.borderRadius.sm,
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                      zIndex: 3,
+                    }}
+                  >
+                    EXPIRED
+                  </div>
+                )}
+
                 {user && (
                   <div
                     style={{
                       position: "absolute",
-                      top: "10px",
+                      top: isExpired ? "40px" : "10px",
                       right: "10px",
                       zIndex: 2,
                     }}
@@ -481,7 +573,7 @@ const CouponDisplay = ({
                   }}
                 >
                   <img
-                    src={coupon.brand_logo || `https://via.placeholder.com/50?text=${coupon.brand}`}
+                    src={coupon.brand_logo || "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/money%20bag/3D/money_bag_3d.png"}
                     alt={`${coupon.brand} logo`}
                     style={{
                       width: "50px",
@@ -515,12 +607,30 @@ const CouponDisplay = ({
                         style={{
                           fontWeight: "bold",
                           color: theme.colors.accent.main,
+                          maxWidth: "120px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          display: "inline-block",
                         }}
+                        title={coupon.savings}
                       >
                         {coupon.savings}
                       </span>
                     </div>
-                    <p style={{ color: theme.colors.neutral[700], margin: "4px 0" }}>
+                    <p
+                      style={{
+                        color: theme.colors.neutral[700],
+                        margin: "4px 0",
+                        maxWidth: "100%",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                      title={coupon.description}
+                    >
                       {coupon.description}
                     </p>
                     <div
@@ -536,7 +646,9 @@ const CouponDisplay = ({
                       <div
                         style={{
                           fontSize: "12px",
-                          color: isExpired ? theme.colors.error.main : theme.colors.neutral[500],
+                          color: isExpired
+                            ? theme.colors.error.main
+                            : theme.colors.neutral[500],
                           display: "flex",
                           alignItems: "center",
                           gap: "4px",
@@ -544,7 +656,11 @@ const CouponDisplay = ({
                       >
                         <FiCalendar size={12} />
                         <span>
-                          Expires: {format(new Date(coupon.expiration_date), "MMM d, yyyy")}
+                          Expires:{" "}
+                          {format(
+                            new Date(coupon.expiration_date),
+                            "MMM d, yyyy"
+                          )}
                         </span>
                       </div>
                     </div>
@@ -567,7 +683,7 @@ const CouponDisplay = ({
           <Link
             to={`/category/${category
               .toLowerCase()
-              .replace(/\s+/g, "-")
+              .replace(/\\s+/g, "-")
               .replace("&", "and")}`}
             style={{
               display: "inline-block",
@@ -581,13 +697,14 @@ const CouponDisplay = ({
               transition: "all 0.2s ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = theme.colors.primary.light + "10";
+              e.currentTarget.style.backgroundColor =
+                theme.colors.primary.light + "10";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = "white";
             }}
           >
-            View All {category} Coupons ({filteredCoupons.length})
+            View {category} Coupons ({filteredCoupons.length})
           </Link>
         </div>
       )}

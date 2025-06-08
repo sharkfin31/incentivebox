@@ -566,11 +566,7 @@ export const processEmailCoupon = async (couponData: {
         expiration_date: couponData.expiration_date,
         criteria: couponData.criteria || "Received via email",
         category: couponData.category || "Other",
-        brand_logo:
-          couponData.brand_logo ||
-          `https://via.placeholder.com/50?text=${encodeURIComponent(
-            couponData.brand
-          )}`,
+        brand_logo: couponData.brand_logo || "/favicon.svg",
         featured: false,
         deal_link: "#",
       },
@@ -592,11 +588,7 @@ export const processEmailCoupon = async (couponData: {
       await supabase.from("brands").insert([
         {
           name: couponData.brand,
-          logo:
-            couponData.brand_logo ||
-            `https://via.placeholder.com/80?text=${encodeURIComponent(
-              couponData.brand
-            )}`,
+          logo: couponData.brand_logo || "/favicon.svg",
           coupons_count: 1,
         },
       ]);

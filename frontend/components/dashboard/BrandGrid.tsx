@@ -57,7 +57,7 @@ const BrandGrid = ({ brands }: BrandGridProps) => {
             }}
           >
             <img
-              src={brand.logo || `https://via.placeholder.com/80?text=${brand.name}`}
+              src={brand.logo || "favicon.svg"}
               alt={`${brand.name} logo`}
               style={{
                 width: '80px',
@@ -66,7 +66,7 @@ const BrandGrid = ({ brands }: BrandGridProps) => {
                 objectFit: 'contain'
               }}
               onError={(e) => {
-                e.currentTarget.src = `https://via.placeholder.com/80?text=${encodeURIComponent(brand.name)}`;
+                e.currentTarget.src = "favicon.svg";
               }}
             />
             <p style={{ 

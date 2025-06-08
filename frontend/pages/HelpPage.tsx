@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { theme } from '../utils/theme';
-import { FiHelpCircle, FiSend, FiCheckCircle } from 'react-icons/fi';
+import { FiHelpCircle, FiSend, FiCheckCircle, FiCopy, FiCheck } from 'react-icons/fi';
 
 const HelpPage = () => {
   const couponEmail = 'dfa8e0973698869a00716346ada53a21@inbound.postmarkapp.com';
+  const [copied, setCopied] = useState(false);
 
   return (
     <div style={{
@@ -84,21 +86,31 @@ const HelpPage = () => {
           <button
             onClick={() => {
               navigator.clipboard.writeText(couponEmail);
-              alert('Email address copied to clipboard!');
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
             }}
             style={{
               padding: '8px 16px',
-              backgroundColor: theme.colors.primary.main,
+              backgroundColor: copied ? theme.colors.success.main : theme.colors.primary.main,
               color: 'white',
               border: 'none',
               borderRadius: theme.borderRadius.md,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              transition: 'background-color 0.2s ease'
             }}
           >
-            Copy Email Address
+            {copied ? (
+              <>
+                <FiCheck /> Copied!
+              </>
+            ) : (
+              <>
+                <FiCopy /> Copy Email Address
+              </>
+            )}
           </button>
         </div>
         

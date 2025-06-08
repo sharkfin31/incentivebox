@@ -142,7 +142,7 @@ const BrandFilter = ({ selectedBrand, onSelectBrand }: BrandFilterProps) => {
                       objectFit: 'contain'
                     }}
                     onError={(e) => {
-                      e.currentTarget.src = `https://via.placeholder.com/50?text=${encodeURIComponent(brand.name)}`;
+                      e.currentTarget.src = "/favicon.svg";
                     }}
                   />
                 </div>

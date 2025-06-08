@@ -15,7 +15,7 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
  */
 function getBrandLogo(brandName) {
   if (!brandName || brandName === 'Unknown') {
-    return 'https://via.placeholder.com/80?text=Brand';
+    return 'favicon.svg';
   }
   
   // Clean up the brand name

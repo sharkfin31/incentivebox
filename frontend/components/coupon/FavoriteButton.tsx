@@ -8,10 +8,10 @@ import { useNotification } from '../../context/NotificationContext';
 interface FavoriteButtonProps {
   couponId: string;
   coupon: any;
-  size?: 'sm' | 'md' | 'lg';
+size?: 'sm' | 'md' | 'lg';
 }
 
-const FavoriteButton = ({ couponId, coupon, size = 'md' }: FavoriteButtonProps) => {
+const FavoriteButton = ({ couponId, size = 'md' }: FavoriteButtonProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();

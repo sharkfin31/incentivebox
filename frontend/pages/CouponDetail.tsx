@@ -148,7 +148,7 @@ const CouponDetail = () => {
             gap: '16px'
           }}>
             <img
-              src={coupon.brand_logo || `https://via.placeholder.com/80?text=${coupon.brand}`}
+              src={coupon.brand_logo || "/favicon.svg"}
               alt={`${coupon.brand} logo`}
               style={{
                 width: '80px',

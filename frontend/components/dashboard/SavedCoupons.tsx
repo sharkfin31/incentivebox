@@ -89,7 +89,7 @@ const SavedCoupons = () => {
             >
               <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                 <img
-                  src={coupon.brand_logo || `https://via.placeholder.com/40?text=${coupon.brand}`}
+                  src={coupon.brand_logo || "/favicon.svg"}
                   alt={`${coupon.brand} logo`}
                   style={{
                     width: '40px',
