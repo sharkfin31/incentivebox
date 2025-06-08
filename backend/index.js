@@ -25,6 +25,19 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({ 
+    message: 'IncentiveBox API Server',
+    version: '1.0.0',
+    endpoints: [
+      '/api/health',
+      '/api/parse-email',
+      '/api/inbound-email'
+    ]
+  });
+});
+
 /**
  * Find user ID by email address
  */
